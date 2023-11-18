@@ -6,7 +6,7 @@ import { IERC4626 } from "@openzeppelin/contracts/interfaces/IERC4626.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import { IYieldForGood } from "./interfaces/IYieldForGood.sol";
-import { IYieldForGoodSoulbound } from "./interfaces/IYieldForGoodSoulBound.sol";
+import { IYieldForGoodSoulBound } from "./interfaces/IYieldForGoodSoulBound.sol";
 
 /**
  * @title YieldForGood
@@ -81,7 +81,7 @@ contract YieldForGood is IYieldForGood, Ownable {
         // Check if it's first time depositor
         if (pool.userPrincipal[msg.sender] == 0 && !pool.userParticipated[msg.sender]) {
             // Mint Soulbound to depositor
-            IYieldForGoodSoulbound(yfgSoulbound).mint(msg.sender);
+            IYieldForGoodSoulBound(yfgSoulbound).mint(msg.sender);
 
             // Mark that user has participated in the pool
             pool.userParticipated[msg.sender] = true;

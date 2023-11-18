@@ -4,13 +4,13 @@ pragma solidity 0.8.21;
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 import { ERC5192 } from "./ERC5192.sol";
-import { IYieldForGoodSoulbound } from "./interfaces/IYieldForGoodSoulBound.sol";
+import { IYieldForGoodSoulBound } from "./interfaces/IYieldForGoodSoulBound.sol";
 
 /**
  * @title YieldForGood Soulbound NFT
  * @dev Yield For Good Soulbound NFT is minted to anyone who stakes in the YieldForGood contract.
  */
-contract YieldForGoodSoulbound is IYieldForGoodSoulbound, ERC5192, Ownable {
+contract YieldForGoodSoulBound is IYieldForGoodSoulBound, ERC5192, Ownable {
     address public yfgAddress;
     uint256 public totalSupply;
 
