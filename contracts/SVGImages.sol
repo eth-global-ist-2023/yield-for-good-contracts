@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 
-contract SVGElements {
+contract SVGImages {
     uint256 private constant MAX_IMAGES = 4;
 
     string[] private images;

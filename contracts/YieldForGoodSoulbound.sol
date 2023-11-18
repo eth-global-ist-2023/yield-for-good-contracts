@@ -5,7 +5,7 @@ import "base64-sol/base64.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 import { ERC5192 } from "./ERC5192.sol";
-import { SVGElements } from "./SVGElements.sol";
+import { SVGImages } from "./SVGImages.sol";
 import { IYieldForGoodSoulBound } from "./interfaces/IYieldForGoodSoulBound.sol";
 
 /**
@@ -20,7 +20,7 @@ contract YieldForGoodSoulBound is IYieldForGoodSoulBound, ERC5192, Ownable {
 
     string private constant baseURI = "data:image/svg+xml;base64,";
 
-    SVGElements SvgLib;
+    SVGImages SvgLib;
 
     /**
      * @dev Constructor to initialize the YieldForGood Soulbound contract.
@@ -30,7 +30,7 @@ contract YieldForGoodSoulBound is IYieldForGoodSoulBound, ERC5192, Ownable {
     constructor(
         string memory name,
         string memory symbol,
-        SVGElements svgLib
+        SVGImages svgLib
     ) ERC5192(name, symbol, true) Ownable(msg.sender) {
         SvgLib = svgLib;
     }
