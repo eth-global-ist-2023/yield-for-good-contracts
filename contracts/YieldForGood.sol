@@ -6,7 +6,7 @@ import { IERC4626 } from "@openzeppelin/contracts/interfaces/IERC4626.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import { IYieldForGood } from "./interfaces/IYieldForGood.sol";
-import { IYieldForGoodSoulbound } from "./interfaces/IYieldForGoodSoulbound.sol";
+import { IYieldForGoodSoulbound } from "./interfaces/IYieldForGoodSoulBound.sol";
 
 /**
  * @title YieldForGood
