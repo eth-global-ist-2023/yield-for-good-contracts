@@ -1,6 +1,10 @@
 import { task } from "hardhat/config";
 import type { TaskArguments } from "hardhat/types";
 
+import { IMG_1 } from "./img_1";
+import { IMG_2 } from "./img_2";
+import { IMG_3 } from "./img_3";
+
 task("task:deploy").setAction(async function (taskArguments: TaskArguments, { ethers }) {
   const signers = await ethers.getSigners();
   const deployer = signers[0];
@@ -21,6 +25,7 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
     .connect(deployer)
     .deploy("Yield For Good Proof of Contribution", "YFG PoC", svgImagesContractAddress);
   await yfgSbContract.waitForDeployment();
+  const yfgSbContractAddress = await yfgSbContract.getAddress();
   console.log("YFG SB deployed to: ", await yfgSbContract.getAddress());
 
   const erc20Factory = await ethers.getContractFactory("MockERC20");
@@ -53,6 +58,13 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
     "Help fight climate change",
     "https://jpmas.com.ni/wp-content/uploads/2022/12/unice-ask-money-climate-change.jpg",
   );
+
+  await svgImagesContract.addImage(IMG_1, 0);
+  await svgImagesContract.addImage(IMG_2, 1);
+  await svgImagesContract.addImage(IMG_3, 2);
+
+  await yfgContract.setYFGSoulbound(yfgSbContractAddress);
+  await yfgSbContract.setYFG(yfgSbContractAddress);
 
   const pool = await yfgContract.pools(1);
   console.log("Pool: ", pool);

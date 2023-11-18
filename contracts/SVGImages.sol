@@ -5,7 +5,7 @@ import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 
 contract SVGImages {
-    uint256 private constant MAX_IMAGES = 4;
+    uint256 private constant MAX_IMAGES = 3;
 
     string[] private images;
 

@@ -113,8 +113,8 @@ const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.21",
     settings: {
+      evmVersion: "paris",
       metadata: {
-        evmVersion: "paris",
         // Not including the metadata hash
         // https://github.com/paulrberg/hardhat-template/issues/31
         bytecodeHash: "none",
