@@ -38,6 +38,7 @@ const chainIds = {
   polygonZkEVMTest: 1442,
   scrollSepolia: 534351,
   "linea-goerli": 59140,
+  celoTestnet: 44787,
 };
 
 function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
@@ -57,6 +58,9 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
       break;
     case "scrollSepolia":
       jsonRpcUrl = "https://sepolia-rpc.scroll.io";
+      break;
+    case "celoTestnet":
+      jsonRpcUrl = "https://alfajores-forno.celo-testnet.org";
       break;
     default:
       jsonRpcUrl = "https://" + chain + ".infura.io/v3/" + infuraApiKey;
@@ -114,6 +118,7 @@ const config: HardhatUserConfig = {
       polygonZkEVMTest: process.env.POLYGONZKEVMSCAN_API_KEY || "",
       scrollSepolia: process.env.SCROLLSCAN_API_KEY || "",
       "linea-goerli": process.env.LINEASCAN_API_KEY || "",
+      celoTestnet: process.env.CELO_TESTNET_API_KEY || "",
     },
   },
   gasReporter: {
@@ -149,6 +154,7 @@ const config: HardhatUserConfig = {
     polygonZkEVMTest: getChainConfig("polygonZkEVMTest"),
     scrollSepolia: getChainConfig("scrollSepolia"),
     "linea-goerli": getChainConfig("linea-goerli"),
+    celoTestnet: getChainConfig("celoTestnet"),
   },
   paths: {
     artifacts: "./artifacts",
