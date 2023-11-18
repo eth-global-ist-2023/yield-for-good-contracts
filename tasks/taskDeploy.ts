@@ -45,7 +45,6 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
   console.log("Ape Coin StakingRewards deployed to: ", await stakingRewardsContractApe.getAddress());
 
   await erc20ContractApe.mint(stakingRewardsContractAddressApe, "1000000000000000000000000000");
-  await stakingRewardsContractApe.notifyRewardAmount("1000000000000000000000000000");
 
   const vaultFactoryApe = await ethers.getContractFactory("MockVault");
   const vaultContractApe = await vaultFactoryApe
@@ -71,7 +70,6 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
   console.log("DAI StakingRewards deployed to: ", await stakingRewardsContractDAI.getAddress());
 
   await erc20ContractDAI.mint(stakingRewardsContractAddressDAI, "1000000000000000000000000000");
-  await stakingRewardsContractDAI.notifyRewardAmount("1000000000000000000000000000");
 
   const vaultFactoryDAI = await ethers.getContractFactory("MockVault");
   const vaultContractDAI = await vaultFactoryDAI
@@ -97,7 +95,6 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
   console.log("USDC StakingRewards deployed to: ", await stakingRewardsContract.getAddress());
 
   await erc20Contract.mint(stakingRewardsContractAddress, "1000000000000000000000000000");
-  await stakingRewardsContract.notifyRewardAmount("1000000000000000000000000000");
 
   const vaultFactory = await ethers.getContractFactory("MockVault");
   const vaultContract = await vaultFactory
@@ -152,6 +149,10 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
 
   await yfgContract.setYFGSoulbound(yfgSbContractAddress);
   await yfgSbContract.setYFG(yfgContractAddress);
+
+  await stakingRewardsContractApe.notifyRewardAmount("1000000000000000000000000000");
+  await stakingRewardsContractDAI.notifyRewardAmount("1000000000000000000000000000");
+  await stakingRewardsContract.notifyRewardAmount("1000000000000000000000000000");
 
   const pool = await yfgContract.pools(1);
   console.log("Pool: ", pool);

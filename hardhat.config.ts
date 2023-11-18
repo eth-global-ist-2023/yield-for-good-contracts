@@ -36,6 +36,7 @@ const chainIds = {
   goerli: 5,
   baseGoerli: 84531,
   polygonZkEVMTest: 1442,
+  scrollSepolia: 534351,
 };
 
 function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
@@ -52,6 +53,9 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
       break;
     case "polygonZkEVMTest":
       jsonRpcUrl = "https://rpc.public.zkevm-test.net";
+      break;
+    case "scrollSepolia":
+      jsonRpcUrl = "https://sepolia-rpc.scroll.io";
       break;
     default:
       jsonRpcUrl = "https://" + chain + ".infura.io/v3/" + infuraApiKey;
@@ -81,6 +85,7 @@ const config: HardhatUserConfig = {
       goerli: process.env.ETHERSCAN_API_KEY || "",
       baseGoerli: process.env.BASESCAN_API_KEY || "",
       polygonZkEVMTest: process.env.POLYGONZKEVMSCAN_API_KEY || "",
+      scrollSepolia: process.env.SCROLLSCAN_API_KEY || "",
     },
   },
   gasReporter: {
@@ -114,6 +119,7 @@ const config: HardhatUserConfig = {
     goerli: getChainConfig("goerli"),
     baseGoerli: getChainConfig("baseGoerli"),
     polygonZkEVMTest: getChainConfig("polygonZkEVMTest"),
+    scrollSepolia: getChainConfig("scrollSepolia"),
   },
   paths: {
     artifacts: "./artifacts",
