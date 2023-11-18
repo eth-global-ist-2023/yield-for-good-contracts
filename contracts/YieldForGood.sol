@@ -196,7 +196,7 @@ contract YieldForGood is IYieldForGood, Ownable {
         IERC4626(pool.yieldSource).withdraw(yieldForClaim, address(this), address(this));
 
         // Reacalulate the new share amount in relation to the principal
-        pool.totalSharesDelegated = IERC4626(pool.yieldSource).convertToShares(pool.totalAssetPrincipal);
+        pool.totalSharesDelegated = IERC4626(pool.yieldSource).previewWithdraw(pool.totalAssetPrincipal);
 
         // Transfer the accrued yield to the owner of the pool
         IERC20(pool.asset).transfer(msg.sender, yieldForClaim);
