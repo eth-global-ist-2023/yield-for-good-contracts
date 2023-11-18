@@ -30,7 +30,7 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
   console.log("YFG SB deployed to: ", await yfgSbContract.getAddress());
 
   const erc20Factory = await ethers.getContractFactory("MockERC20");
-  const erc20Contract = await erc20Factory.connect(deployer).deploy("DAI", "DAI");
+  const erc20Contract = await erc20Factory.connect(deployer).deploy("USDC", "USDC");
   await erc20Contract.waitForDeployment();
   const erc20ContractAddress = await erc20Contract.getAddress();
   console.log("ERC20 deployed to: ", await erc20Contract.getAddress());
@@ -49,7 +49,7 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
   const vaultFactory = await ethers.getContractFactory("MockVault");
   const vaultContract = await vaultFactory
     .connect(deployer)
-    .deploy(erc20ContractAddress, stakingRewardsContractAddress, "sDAI", "sDAI");
+    .deploy(erc20ContractAddress, stakingRewardsContractAddress, "sUSDC", "sUSDC");
   await vaultContract.waitForDeployment();
   const vaultContractAddress = await vaultContract.getAddress();
   console.log("Vault deployed to: ", await vaultContract.getAddress());
