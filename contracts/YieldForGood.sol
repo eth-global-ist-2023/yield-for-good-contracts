@@ -25,6 +25,8 @@ contract YieldForGood is IYieldForGood, Ownable {
     {
         Pool storage pool = pools[poolId];
 
+        if (poolId > lastPoolId) revert PoolDoesNotExist();
+
         uint256 sharesToAsset = IERC4626(pool.yieldSource).previewRedeem(pool.totalSharesDelegated);
 
         (sharesToAsset > pool.totalAssetPrincipal)
@@ -40,6 +42,8 @@ contract YieldForGood is IYieldForGood, Ownable {
 
     function enter(uint256 poolId, uint256 amount) external {
         Pool storage pool = pools[poolId];
+
+        if (poolId > lastPoolId) revert PoolDoesNotExist();
 
         if (pool.userPrincipal[msg.sender] == 0 && !pool.userParticipated[msg.sender]) {
 
@@ -58,10 +62,14 @@ contract YieldForGood is IYieldForGood, Ownable {
 
         pool.userPrincipal[msg.sender] += amount;
 
+        emit PoolEntered(poolId, pool.asset, amount);
     }
 
     function exit(uint256 poolId, uint256 amount) external {
         Pool storage pool = pools[poolId];
+
+        if (poolId > lastPoolId) revert PoolDoesNotExist();
+        if (amount > pool.userPrincipal[msg.sender]) revert NotEnoughFundsToWithdraw();
 
         uint256 shares = IERC4626(pool.yieldSource).withdraw(amount, address(this), address(this));
 
@@ -73,9 +81,11 @@ contract YieldForGood is IYieldForGood, Ownable {
 
         IERC20(pool.asset).transfer(msg.sender, amount);
 
+        emit PoolExited(poolId, pool.asset, amount);
     }
 
     function createPool(address yieldSource) external {
+        if (!supportedYieldSources[yieldSource]) revert YieldSourceNotSupported();
 
         ++lastPoolId;
 
@@ -88,10 +98,15 @@ contract YieldForGood is IYieldForGood, Ownable {
 
         IERC20(underlyingAsset).approve(yieldSource, type(uint256).max);
 
+        emit PoolCreated(lastPoolId, yieldSource, underlyingAsset, msg.sender);
     }
 
     function claimYield(uint256 poolId) external returns (uint256 yieldForClaim) {
         Pool storage pool = pools[poolId];
+
+        if (poolId > lastPoolId) revert PoolDoesNotExist();
+
+        if (msg.sender != pool.poolOwner) revert NotOwnerOfPool();
 
         uint256 sharesToAsset = IERC4626(pool.yieldSource).previewRedeem(pool.totalSharesDelegated);
 
@@ -105,16 +120,34 @@ contract YieldForGood is IYieldForGood, Ownable {
 
         IERC20(pool.asset).transfer(msg.sender, yieldForClaim);
 
+        emit YieldClaimed(poolId, yieldForClaim, pool.asset, pool.yieldSource, pool.poolOwner);
     }
 
     function updateSupportedYieldSource(address yieldSource, bool isSupported) external onlyOwner {
+        if (yieldSource == address(0)) revert AddressZero();
 
         supportedYieldSources[yieldSource] = isSupported;
 
+        emit UpdateSupportedYieldSource(yieldSource, isSupported);
     }
 
     function setYFGSoulbound(address _yfgSoulbound) external onlyOwner {
         yfgSoulbound = _yfgSoulbound;
     }
 
+    /* ========== EVENTS ========== */
+
+    event YieldClaimed(uint256 poolId, uint256 amount, address underlyingAsset, address yieldSource, address receiver);
+    event UpdateSupportedYieldSource(address yieldSource, bool isSupported);
+    event PoolCreated(uint256 poolId, address yieldSource, address underlyingAsset, address poolOwner);
+    event PoolEntered(uint256 poolId, address underlyingAsset, uint256 amount);
+    event PoolExited(uint256 poolId, address underlyingAsset, uint256 amount);
+
+    /* ========== CUSTOM ERRORS ========== */
+
+    error NotOwnerOfPool();
+    error PoolDoesNotExist();
+    error YieldSourceNotSupported();
+    error NotEnoughFundsToWithdraw();
+    error AddressZero();
 }
