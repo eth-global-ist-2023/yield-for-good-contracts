@@ -2,6 +2,22 @@
 pragma solidity 0.8.21;
 
 interface IYieldForGood {
+    /* ========== EVENTS ========== */
+
+    event YieldClaimed(uint256 poolId, uint256 amount, address underlyingAsset, address yieldSource, address receiver);
+    event UpdateSupportedYieldSource(address yieldSource, bool isSupported);
+    event PoolCreated(uint256 poolId, address yieldSource, address underlyingAsset, address poolOwner);
+    event PoolEntered(uint256 poolId, address underlyingAsset, uint256 amount);
+    event PoolExited(uint256 poolId, address underlyingAsset, uint256 amount);
+
+    /* ========== CUSTOM ERRORS ========== */
+
+    error NotOwnerOfPool();
+    error PoolDoesNotExist();
+    error YieldSourceNotSupported();
+    error NotEnoughFundsToWithdraw();
+    error AddressZero();
+
     struct Pool {
         string title;
         string description;
