@@ -103,6 +103,14 @@ const config: HardhatUserConfig = {
           browserURL: "https://testnet-zkevm.polygonscan.com/",
         },
       },
+      {
+        network: "celoTestnet",
+        chainId: 44787,
+        urls: {
+          apiURL: "https://api-alfajores.celoscan.io/api",
+          browserURL: "https://alfajores.celoscan.io/",
+        },
+      },
     ],
     apiKey: {
       arbitrumOne: process.env.ARBISCAN_API_KEY || "",
@@ -118,7 +126,7 @@ const config: HardhatUserConfig = {
       polygonZkEVMTest: process.env.POLYGONZKEVMSCAN_API_KEY || "",
       scrollSepolia: process.env.SCROLLSCAN_API_KEY || "",
       "linea-goerli": process.env.LINEASCAN_API_KEY || "",
-      celoTestnet: process.env.CELO_TESTNET_API_KEY || "",
+      celoTestnet: process.env.CELOSCAN_API_KEY || "",
     },
   },
   gasReporter: {
