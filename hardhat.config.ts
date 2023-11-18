@@ -37,6 +37,7 @@ const chainIds = {
   baseGoerli: 84531,
   polygonZkEVMTest: 1442,
   scrollSepolia: 534351,
+  "linea-goerli": 59140,
 };
 
 function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
@@ -73,6 +74,32 @@ const config: HardhatUserConfig = {
     deployer: 0,
   },
   etherscan: {
+    customChains: [
+      {
+        network: "linea-goerli",
+        chainId: 59140,
+        urls: {
+          apiURL: "https://api-goerli.lineascan.build/api",
+          browserURL: "https://goerli.lineascan.build/",
+        },
+      },
+      {
+        network: "scrollSepolia",
+        chainId: 534351,
+        urls: {
+          apiURL: "https://api-sepolia.scrollscan.com/api",
+          browserURL: "https://sepolia.scrollscan.com/",
+        },
+      },
+      {
+        network: "polygonZkEVMTest",
+        chainId: 1442,
+        urls: {
+          apiURL: "https://api-testnet-zkevm.polygonscan.com/api",
+          browserURL: "https://testnet-zkevm.polygonscan.com/",
+        },
+      },
+    ],
     apiKey: {
       arbitrumOne: process.env.ARBISCAN_API_KEY || "",
       avalanche: process.env.SNOWTRACE_API_KEY || "",
@@ -86,6 +113,7 @@ const config: HardhatUserConfig = {
       baseGoerli: process.env.BASESCAN_API_KEY || "",
       polygonZkEVMTest: process.env.POLYGONZKEVMSCAN_API_KEY || "",
       scrollSepolia: process.env.SCROLLSCAN_API_KEY || "",
+      "linea-goerli": process.env.LINEASCAN_API_KEY || "",
     },
   },
   gasReporter: {
@@ -120,6 +148,7 @@ const config: HardhatUserConfig = {
     baseGoerli: getChainConfig("baseGoerli"),
     polygonZkEVMTest: getChainConfig("polygonZkEVMTest"),
     scrollSepolia: getChainConfig("scrollSepolia"),
+    "linea-goerli": getChainConfig("linea-goerli"),
   },
   paths: {
     artifacts: "./artifacts",
