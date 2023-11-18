@@ -34,6 +34,8 @@ const chainIds = {
   "polygon-mumbai": 80001,
   sepolia: 11155111,
   goerli: 5,
+  baseGoerli: 84531,
+  polygonZkEVMTest: 1442,
 };
 
 function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
@@ -44,6 +46,12 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
       break;
     case "bsc":
       jsonRpcUrl = "https://bsc-dataseed1.binance.org";
+      break;
+    case "baseGoerli":
+      jsonRpcUrl = "https://goerli.base.org";
+      break;
+    case "polygonZkEVMTest":
+      jsonRpcUrl = "https://rpc.public.zkevm-test.net";
       break;
     default:
       jsonRpcUrl = "https://" + chain + ".infura.io/v3/" + infuraApiKey;
@@ -71,6 +79,8 @@ const config: HardhatUserConfig = {
       polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
       sepolia: process.env.ETHERSCAN_API_KEY || "",
       goerli: process.env.ETHERSCAN_API_KEY || "",
+      baseGoerli: process.env.BASESCAN_API_KEY || "",
+      polygonZkEVMTest: process.env.POLYGONZKEVMSCAN_API_KEY || "",
     },
   },
   gasReporter: {
@@ -102,6 +112,8 @@ const config: HardhatUserConfig = {
     "polygon-mumbai": getChainConfig("polygon-mumbai"),
     sepolia: getChainConfig("sepolia"),
     goerli: getChainConfig("goerli"),
+    baseGoerli: getChainConfig("baseGoerli"),
+    polygonZkEVMTest: getChainConfig("polygonZkEVMTest"),
   },
   paths: {
     artifacts: "./artifacts",
