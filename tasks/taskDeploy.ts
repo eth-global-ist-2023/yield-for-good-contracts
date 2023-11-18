@@ -43,6 +43,9 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
   const stakingRewardsContractAddress = await stakingRewardsContract.getAddress();
   console.log("StakingRewards deployed to: ", await stakingRewardsContract.getAddress());
 
+  await erc20Contract.mint(stakingRewardsContractAddress, "1000000000000000000000000000");
+  await stakingRewardsContract.notifyRewardAmount("1000000000000000000000000000");
+
   const vaultFactory = await ethers.getContractFactory("MockVault");
   const vaultContract = await vaultFactory
     .connect(deployer)
