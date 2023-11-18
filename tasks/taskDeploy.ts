@@ -12,6 +12,7 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
   const yfgFactory = await ethers.getContractFactory("YieldForGood");
   const yfgContract = await yfgFactory.connect(deployer).deploy();
   await yfgContract.waitForDeployment();
+  const yfgContractAddress = await yfgContract.getAddress();
   console.log("YFG deployed to: ", await yfgContract.getAddress());
 
   const svgImagesFactory = await ethers.getContractFactory("SVGImages");
@@ -64,7 +65,7 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
   await svgImagesContract.addImage(IMG_3, 2);
 
   await yfgContract.setYFGSoulbound(yfgSbContractAddress);
-  await yfgSbContract.setYFG(yfgSbContractAddress);
+  await yfgSbContract.setYFG(yfgContractAddress);
 
   const pool = await yfgContract.pools(1);
   console.log("Pool: ", pool);
