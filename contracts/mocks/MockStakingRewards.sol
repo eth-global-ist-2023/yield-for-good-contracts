@@ -51,9 +51,12 @@ contract MockStakingRewards is IStakingRewards, ReentrancyGuard, Pausable, Ownab
      * @param _rewardsDuration The duration of the rewards period.
      * @param _lockPeriod The lock period when staking tokens.
      */
-    constructor(address _rewardsToken, address _stakingToken, uint256 _rewardsDuration, uint256 _lockPeriod)
-        Ownable(msg.sender)
-    {
+    constructor(
+        address _rewardsToken,
+        address _stakingToken,
+        uint256 _rewardsDuration,
+        uint256 _lockPeriod
+    ) Ownable(msg.sender) {
         rewardsToken = _rewardsToken;
         stakingToken = _stakingToken;
         rewardsDuration = _rewardsDuration;
@@ -199,14 +202,14 @@ contract MockStakingRewards is IStakingRewards, ReentrancyGuard, Pausable, Ownab
     /**
      * @dev Withdraws the staking rewards from the contract.
      * @param destinationAddress The address to which the staking rewards will be transferred.
-     * @param pendingRewards The amount of pending rewards to be subtracted from the total balance and remain in the contract.
+     * @param pendingRewards Amount of pending rewards to be subtracted from the total and remain in the contract.
      */
     function withdrawStakingRewards(address destinationAddress, uint256 pendingRewards) external onlyOwner {
         require(
             block.timestamp > periodFinish,
             "Previous rewards period must be complete before withdrawing the staking rewards"
         );
-        // The remaining rewards are calclulated by substracting the totalSupply(staked) + pendingRewards from the total balance
+        // Remaining rewards are calclulated by substracting the totalSupply + pendingRewards from the total balance
         uint256 tokenAmount = IERC20(stakingToken).balanceOf(address(this)) - totalSupply - pendingRewards;
         IERC20(stakingToken).safeTransfer(destinationAddress, tokenAmount);
         emit WithdrawStakingRewards(destinationAddress, tokenAmount);

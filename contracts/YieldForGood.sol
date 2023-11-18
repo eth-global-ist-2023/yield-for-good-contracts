@@ -44,7 +44,7 @@ contract YieldForGood is IYieldForGood, Ownable {
         // Check if pool exists
         if (poolId > lastPoolId) revert PoolDoesNotExist();
 
-        // Convert total shares to underlying assset, so we can calculate the accrued yield amount by deducting the principal
+        // Convert total shares to underlying assset, so we can calculate the yield amount by deducting the principal
         uint256 sharesToAsset = IERC4626(pool.yieldSource).previewRedeem(pool.totalSharesDelegated);
 
         // Calclulate the yield to claim
@@ -184,7 +184,7 @@ contract YieldForGood is IYieldForGood, Ownable {
         // Check if caller is owner of the pool
         if (msg.sender != pool.poolOwner) revert NotOwnerOfPool();
 
-        // Convert total shares to underlying assset, so we can calculate the accrued yield amount by deducting the principal
+        // Convert total shares to underlying assset, so we can calculate the yield amount by deducting the principal
         uint256 sharesToAsset = IERC4626(pool.yieldSource).previewRedeem(pool.totalSharesDelegated);
 
         // Calclulate the yield to claim

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import {ERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { ERC4626 } from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-import {IStakingRewards} from "../interfaces/IStakingRewards.sol";
+import { IStakingRewards } from "../interfaces/IStakingRewards.sol";
 
 /**
  * @title MockVault
@@ -29,10 +29,12 @@ contract MockVault is ERC4626 {
      * @param _coin ERC20 token contract address.
      * @param _stakingRewards Staking Rewards contract address.
      */
-    constructor(IERC20 _coin, address _stakingRewards, string memory _name, string memory _symbol)
-        ERC4626(_coin)
-        ERC20(_name, _symbol)
-    {
+    constructor(
+        IERC20 _coin,
+        address _stakingRewards,
+        string memory _name,
+        string memory _symbol
+    ) ERC4626(_coin) ERC20(_name, _symbol) {
         coin = address(_coin);
         stakingRewards = _stakingRewards;
 
@@ -101,10 +103,13 @@ contract MockVault is ERC4626 {
     /**
      * @dev See {ERC4626-_withdraw}.
      */
-    function _withdraw(address caller, address receiver, address owner, uint256 assets, uint256 shares)
-        internal
-        override
-    {
+    function _withdraw(
+        address caller,
+        address receiver,
+        address owner,
+        uint256 assets,
+        uint256 shares
+    ) internal override {
         _beforeWithdraw(assets);
         super._withdraw(caller, receiver, owner, assets, shares);
     }

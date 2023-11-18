@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import {IERC5192} from "./interfaces/IERC5192.sol";
+import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import { IERC5192 } from "./interfaces/IERC5192.sol";
 
 abstract contract ERC5192 is ERC721, IERC5192 {
     bool private _locked;

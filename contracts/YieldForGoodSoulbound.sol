@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-import {ERC5192} from "./ERC5192.sol";
-import {IYieldForGoodSoulbound} from "./interfaces/IYieldForGoodSoulbound.sol";
+import { ERC5192 } from "./ERC5192.sol";
+import { IYieldForGoodSoulbound } from "./interfaces/IYieldForGoodSoulbound.sol";
 
 /**
  * @title YieldForGood Soulbound NFT
