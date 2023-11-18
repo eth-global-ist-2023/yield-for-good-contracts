@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {IERC4626} from "@openzeppelin/contracts/interfaces/IERC4626.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { IERC4626 } from "@openzeppelin/contracts/interfaces/IERC4626.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import {IYieldForGood} from "./interfaces/IYieldForGood.sol";
-import {IYieldForGoodSoulbound} from "./interfaces/IYieldForGoodSoulbound.sol";
+import { IYieldForGood } from "./interfaces/IYieldForGood.sol";
+import { IYieldForGoodSoulbound } from "./interfaces/IYieldForGoodSoulbound.sol";
 
 /**
  * @title YieldForGood
@@ -36,11 +36,9 @@ contract YieldForGood is IYieldForGood, Ownable {
      * @return accruedYield The accrued yield for the chosen pool.
      * @return underlyingAsset The undedrlying asset of the pool.
      */
-    function getAccruedYieldForPool(uint256 poolId)
-        external
-        view
-        returns (uint256 accruedYield, address underlyingAsset)
-    {
+    function getAccruedYieldForPool(
+        uint256 poolId
+    ) external view returns (uint256 accruedYield, address underlyingAsset) {
         Pool storage pool = pools[poolId];
 
         // Check if pool exists
@@ -80,12 +78,18 @@ contract YieldForGood is IYieldForGood, Ownable {
 
         if (poolId > lastPoolId) revert PoolDoesNotExist();
 
+        // Check if it's first time depositor
         if (pool.userPrincipal[msg.sender] == 0 && !pool.userParticipated[msg.sender]) {
             // Mint Soulbound to depositor
             IYieldForGoodSoulbound(yfgSoulbound).mint(msg.sender);
 
             // Mark that user has participated in the pool
             pool.userParticipated[msg.sender] = true;
+        }
+
+        // Increment total participants
+        if (pool.userPrincipal[msg.sender] == 0) {
+            ++pool.totalParticipants;
         }
 
         // Transfer the underlying asset to the YFG Contract
@@ -124,6 +128,11 @@ contract YieldForGood is IYieldForGood, Ownable {
         // Decrement the asset principal amount
         pool.userPrincipal[msg.sender] -= amount;
 
+        // Decrement total participants
+        if (pool.userPrincipal[msg.sender] == 0) {
+            --pool.totalParticipants;
+        }
+
         // Transfer the underlying asset to the depositor
         IERC20(pool.asset).transfer(msg.sender, amount);
 
@@ -134,7 +143,12 @@ contract YieldForGood is IYieldForGood, Ownable {
      * @dev Creates an YieldForGoodPool to collect aggregated yield.
      * @param yieldSource The address of the yield source.
      */
-    function createPool(address yieldSource) external {
+    function createPool(
+        address yieldSource,
+        string memory title,
+        string memory description,
+        string memory imageURI
+    ) external {
         if (!supportedYieldSources[yieldSource]) revert YieldSourceNotSupported();
 
         ++lastPoolId;
@@ -145,6 +159,11 @@ contract YieldForGood is IYieldForGood, Ownable {
         pools[poolId].poolOwner = msg.sender;
         pools[poolId].yieldSource = yieldSource;
         pools[poolId].asset = underlyingAsset;
+        pools[poolId].creationDate = block.timestamp;
+
+        pools[poolId].title = title;
+        pools[poolId].description = description;
+        pools[poolId].imageURI = imageURI;
 
         IERC20(underlyingAsset).approve(yieldSource, type(uint256).max);
 
