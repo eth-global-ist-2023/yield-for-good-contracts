@@ -6,7 +6,6 @@ import type { NetworkUserConfig } from "hardhat/types";
 import { resolve } from "path";
 
 import "./tasks/accounts";
-import "./tasks/greet";
 import "./tasks/taskDeploy";
 
 const dotenvConfigPath: string = process.env.DOTENV_CONFIG_PATH || "./.env";
@@ -115,6 +114,7 @@ const config: HardhatUserConfig = {
     version: "0.8.21",
     settings: {
       metadata: {
+        evmVersion: "paris",
         // Not including the metadata hash
         // https://github.com/paulrberg/hardhat-template/issues/31
         bytecodeHash: "none",

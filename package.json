@@ -76,8 +76,7 @@
     "postinstall": "DOTENV_CONFIG_PATH=./.env.example pnpm typechain",
     "prettier:check": "prettier --check \"**/*.{js,json,md,sol,ts,yml}\"",
     "prettier:write": "prettier --write \"**/*.{js,json,md,sol,ts,yml}\"",
-    "task:deployGreeter": "hardhat task:deployGreeter",
-    "task:setGreeting": "hardhat task:setGreeting",
+    "task:deploy": "hardhat task:deploy",
     "test": "hardhat test",
     "typechain": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat typechain"
   }

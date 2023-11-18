@@ -1,12 +1,59 @@
 import { task } from "hardhat/config";
 import type { TaskArguments } from "hardhat/types";
 
-task("task:deployGreeter")
-  .addParam("greeting", "Say hello, be nice")
-  .setAction(async function (taskArguments: TaskArguments, { ethers }) {
-    const signers = await ethers.getSigners();
-    const greeterFactory = await ethers.getContractFactory("Greeter");
-    const greeter = await greeterFactory.connect(signers[0]).deploy(taskArguments.greeting);
-    await greeter.waitForDeployment();
-    console.log("Greeter deployed to: ", await greeter.getAddress());
-  });
+task("task:deploy").setAction(async function (taskArguments: TaskArguments, { ethers }) {
+  const signers = await ethers.getSigners();
+  const deployer = signers[0];
+
+  const yfgFactory = await ethers.getContractFactory("YieldForGood");
+  const yfgContract = await yfgFactory.connect(deployer).deploy();
+  await yfgContract.waitForDeployment();
+  console.log("YFG deployed to: ", await yfgContract.getAddress());
+
+  const svgImagesFactory = await ethers.getContractFactory("SVGImages");
+  const svgImagesContract = await svgImagesFactory.connect(deployer).deploy();
+  await svgImagesContract.waitForDeployment();
+  const svgImagesContractAddress = await svgImagesContract.getAddress();
+  console.log("SvgImages deployed to: ", await svgImagesContract.getAddress());
+
+  const yfgSbFactory = await ethers.getContractFactory("YieldForGoodSoulBound");
+  const yfgSbContract = await yfgSbFactory
+    .connect(deployer)
+    .deploy("Yield For Good Proof of Contribution", "YFG PoC", svgImagesContractAddress);
+  await yfgSbContract.waitForDeployment();
+  console.log("YFG SB deployed to: ", await yfgSbContract.getAddress());
+
+  const erc20Factory = await ethers.getContractFactory("MockERC20");
+  const erc20Contract = await erc20Factory.connect(deployer).deploy("DAI", "DAI");
+  await erc20Contract.waitForDeployment();
+  const erc20ContractAddress = await erc20Contract.getAddress();
+  console.log("ERC20 deployed to: ", await erc20Contract.getAddress());
+
+  const stakingRewardsFactory = await ethers.getContractFactory("MockStakingRewards");
+  const stakingRewardsContract = await stakingRewardsFactory
+    .connect(deployer)
+    .deploy(erc20ContractAddress, erc20ContractAddress, 31536000, 0);
+  await stakingRewardsContract.waitForDeployment();
+  const stakingRewardsContractAddress = await stakingRewardsContract.getAddress();
+  console.log("StakingRewards deployed to: ", await stakingRewardsContract.getAddress());
+
+  const vaultFactory = await ethers.getContractFactory("MockVault");
+  const vaultContract = await vaultFactory
+    .connect(deployer)
+    .deploy(erc20ContractAddress, stakingRewardsContractAddress, "sDAI", "sDAI");
+  await vaultContract.waitForDeployment();
+  const vaultContractAddress = await vaultContract.getAddress();
+  console.log("Vault deployed to: ", await vaultContract.getAddress());
+
+  await yfgContract.updateSupportedYieldSource(vaultContractAddress, true);
+
+  await yfgContract.createPool(
+    vaultContractAddress,
+    "Unicef Green Trees",
+    "Help fight climate change",
+    "https://jpmas.com.ni/wp-content/uploads/2022/12/unice-ask-money-climate-change.jpg",
+  );
+
+  const pool = await yfgContract.pools(1);
+  console.log("Pool: ", pool);
+});
