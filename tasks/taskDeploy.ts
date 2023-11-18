@@ -58,9 +58,37 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
 
   await yfgContract.createPool(
     vaultContractAddress,
-    "Unicef Green Trees",
-    "Help fight climate change",
-    "https://jpmas.com.ni/wp-content/uploads/2022/12/unice-ask-money-climate-change.jpg",
+    "CHILDREN FACING A WATER CRISIS NEED YOUR HELP",
+    "UNICEF launched the Water Under Fire campaign to draw global attention to three fundamental areas where changes are urgently needed to secure access to safe and sustainable water and sanitation in fragile contexts.",
+    "https://unicef.or.th/donate/uploads/a46VODlzGrEoRRhmjpe8qlfanSctMKsba4KrZBlh.png",
+  );
+
+  await yfgContract.createPool(
+    vaultContractAddress,
+    "Protect the World's Forests",
+    "For years, deforestation has been creeping into our home. Our fridge. Our lunch. Our coffee and the paper cups it comes in.",
+    "https://wwfeu.awsassets.panda.org/img/original/wwf_t4f_email_signature_jaguar_1200x630__1_.png",
+  );
+
+  await yfgContract.createPool(
+    vaultContractAddress,
+    "Connect Capital to Communities that Need it the Most",
+    "",
+    "https://images.prismic.io/impact-market/ed9a450e-df79-49ff-ae5e-1c35e2b361a2_seoimage.jpg?auto=compress,format",
+  );
+
+  await yfgContract.createPool(
+    vaultContractAddress,
+    "Connect Capital to Communities that Need it the Most",
+    "If you ever visited Wikipedia, you might have seen a message asking you for a small donation. That is because Wikipedia and the 12 other free knowledge projects that are operated by the Wikimedia Foundation are made possible mostly by donations from individual donors like you. Watch to learn more.",
+    "https://i.ytimg.com/vi/DkTj2NHKITE/maxresdefault.jpg",
+  );
+
+  await yfgContract.createPool(
+    vaultContractAddress,
+    "Creates new opportunities for girls and gender nonconforming youth of color",
+    "Black girls and gender nonconforming youth of color can power the future. Their code gets us there. We support their creativity and boldness with skills, training, and resources that launch their leadership.",
+    "https://i.ytimg.com/vi/rFKVTNoegAY/maxresdefault.jpg",
   );
 
   await svgImagesContract.addImage(IMG_1, 0);
