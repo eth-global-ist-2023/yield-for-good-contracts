@@ -13,7 +13,7 @@ import { IYieldForGoodSoulBound } from "./interfaces/IYieldForGoodSoulBound.sol"
  * @dev Yield For Good Soulbound NFT is minted to anyone who stakes in the YieldForGood contract.
  */
 contract YieldForGoodSoulBound is IYieldForGoodSoulBound, ERC5192, Ownable {
-    uint256 public totalSupply;
+    uint256 public lastTokenId;
     address public yfgAddress;
 
     mapping(uint256 tokenId => uint256 svgIndex) private tokenIdToSvgIndex;
@@ -55,7 +55,7 @@ contract YieldForGoodSoulBound is IYieldForGoodSoulBound, ERC5192, Ownable {
             revert UnauthorizedMint();
         }
 
-        uint256 tokenId = ++totalSupply;
+        uint256 tokenId = ++lastTokenId;
         _safeMint(to, tokenId);
 
         uint256 svgIndex = SvgLib.getRandomNumber();
