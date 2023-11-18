@@ -73,7 +73,7 @@ task("task:deploy").setAction(async function (taskArguments: TaskArguments, { et
   await yfgContract.createPool(
     vaultContractAddress,
     "Connect Capital to Communities that Need it the Most",
-    "",
+    "It is vital to connect with communities in need for capital to improve their life.",
     "https://images.prismic.io/impact-market/ed9a450e-df79-49ff-ae5e-1c35e2b361a2_seoimage.jpg?auto=compress,format",
   );
 
